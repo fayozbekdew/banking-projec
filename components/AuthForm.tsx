@@ -10,7 +10,7 @@ import { Loader2 } from "lucide-react";
 import { Form } from "@/components/ui/form";
 import { authFormSchema } from "@/lib/utils";
 import CustomInput from "./CustomInput";
-import { useRouter } from "@/node_modules/next/navigation";
+import { redirect, useRouter } from "@/node_modules/next/navigation";
 import { getLoggedInUser, SignIn, SignUp } from "@/lib/actions/user.action";
 function AuthForm({ type }: { type: string }) {
   const router = useRouter();
@@ -38,6 +38,9 @@ function AuthForm({ type }: { type: string }) {
           name: `${values.firstName} ${values.lastName}`,
         });
         setUser(newUser);
+        if (newUser) {
+          router.push("/");
+        }
       }
       if (type === "sign-in-page") {
         const response = await SignIn({
