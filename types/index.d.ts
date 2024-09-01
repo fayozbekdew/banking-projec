@@ -205,7 +205,7 @@ declare interface PlaidLinkProps {
 // };
 
 declare interface AuthFormProps {
-  type: "sign-in" | "sign-up";
+  type: "sign-in-page" | "sign-up-page";
 }
 
 declare interface BankDropdownProps {
