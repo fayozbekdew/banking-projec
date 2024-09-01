@@ -12,7 +12,7 @@ import { authFormSchema } from "@/lib/utils";
 import CustomInput from "./CustomInput";
 import { useRouter } from "@/node_modules/next/navigation";
 import { getLoggedInUser, SignIn, SignUp } from "@/lib/actions/user.action";
- function AuthForm({ type }: { type: string }) {
+function AuthForm({ type }: { type: string }) {
   const router = useRouter();
   const [user, setUser] = useState(null);
   console.log(user);
@@ -30,14 +30,16 @@ import { getLoggedInUser, SignIn, SignUp } from "@/lib/actions/user.action";
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     setIsLoading(true);
     try {
-      if (type === "sign-up") {
+      if (type === "sign-up-page") {
         console.log(values);
-        const newUser = await SignUp(
-          { email: values.email, password: values.password, name:`${values.firstName} ${values.lastName}` }
-        );
+        const newUser = await SignUp({
+          email: values.email,
+          password: values.password,
+          name: `${values.firstName} ${values.lastName}`,
+        });
         setUser(newUser);
       }
-      if (type === "sign-in") {
+      if (type === "sign-in-page") {
         const response = await SignIn({
           email: values.email,
           password: values.password,
@@ -64,7 +66,11 @@ import { getLoggedInUser, SignIn, SignUp } from "@/lib/actions/user.action";
         </Link>
         <div className="flex flex-col gap-1 md:gap-3">
           <h1 className="text-24 lg:text-36 font-semibold text-gray-900">
-            {user ? "Link Account" : type === "sign-up" ? "Sign Up" : "Sign In"}
+            {user
+              ? "Link Account"
+              : type === "sign-up-page"
+              ? "Sign Up"
+              : "Sign In"}
             <p className="text-16 font-normal text-gray-600">
               {user
                 ? "Link your account to get started"
@@ -79,7 +85,7 @@ import { getLoggedInUser, SignIn, SignUp } from "@/lib/actions/user.action";
         <>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-              {type === "sign-up" && (
+              {type === "sign-up-page" && (
                 <>
                   <div className="flex gap-4">
                     <CustomInput
@@ -159,7 +165,7 @@ import { getLoggedInUser, SignIn, SignUp } from "@/lib/actions/user.action";
                       <Loader2 size={20} className="animate-spin" /> &nbsp;
                       Loading...
                     </>
-                  ) : type === "sign-up" ? (
+                  ) : type === "sign-up-page" ? (
                     "Sign Up"
                   ) : (
                     "Sign In"
@@ -170,15 +176,15 @@ import { getLoggedInUser, SignIn, SignUp } from "@/lib/actions/user.action";
           </Form>
           <footer className="flex justify-center gap-1">
             <p className="text-14 font-normal text-gray-600">
-              {type === "sign-in"
+              {type === "sign-in-page"
                 ? "Don't have you account?"
                 : "Already have an account"}
             </p>
             <Link
-              href={type === "sign-in" ? "/sign-up" : "sign-in"}
+              href={type === "sign-in-page" ? "/sign-up-page" : "sign-in-page"}
               className="form-link"
             >
-              {type === "sign-in" ? "Sign Up" : "Sign In"}
+              {type === "sign-in-page" ? "Sign Up" : "Sign In"}
             </Link>
           </footer>
         </>
